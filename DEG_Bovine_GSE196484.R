@@ -1,5 +1,5 @@
 ###########
-### DEG ###
+### R script to find DEG in Bovine tissue###
 library(DESeq2)
 library(ggplot2)
 library(RColorBrewer)
