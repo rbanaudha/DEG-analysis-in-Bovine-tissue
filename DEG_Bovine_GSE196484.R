@@ -1,5 +1,5 @@
 ###########
-### R script to find DEG in Bovine tissue###
+### R script to find DEG in diiferent developmental stages of Bovine###
 library(DESeq2)
 library(ggplot2)
 library(RColorBrewer)
