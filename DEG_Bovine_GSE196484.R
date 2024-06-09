@@ -6,7 +6,7 @@ library(RColorBrewer)
 library(pheatmap)
 library(ggrepel)
 library(RUVSeq)
-
+library(dplyr)
 
 # Define a function to read and process data
 read_and_process <- function(file, pattern = "_[^_]*_[^_]*$") {
@@ -58,7 +58,7 @@ stopifnot(all(rownames(coldata) == colnames(merged_data)))
 
 
 # DESeq2 Analysis
-library(DESeq2)
+
 x <- factor(coldata$group)
 design <- model.matrix(~0 + x)
 colnames(design) <- levels(x)
@@ -75,10 +75,6 @@ cpm <- cpm[keep,]
 #rpkm <- apply(merged_data, 2, function(x) x / sum(x)) * 10^9 / geneLength
 
 # PCA and heatmap
-library(pheatmap)
-library(ggplot2)
-library(ggrepel)
-
 rld <- vst(dds, blind = FALSE)
 pheatmap(cor(assay(rld)), annotation_col = coldata, show_colnames = FALSE, main = "Correlation within samples")
 
@@ -100,8 +96,6 @@ ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
 
 
 # Batch correction with RUVSeq
-library(RUVSeq)
-library(edgeR)
 
 set <- newSeqExpressionSet(as.matrix(merged_data[keep, ]), phenoData = data.frame(x, row.names = colnames(merged_data)))
 y <- DGEList(counts = counts(set), group = x)
@@ -233,7 +227,6 @@ dim(res10f_DOWN)
 
 
 # volcano plot between 2Cell vs 8CEll####
-library(dplyr)
 category1=ifelse(res1$padj>0.05|abs(res1$log2FoldChange)<1,"Regularly expressed",ifelse(res1$log2FoldChange>1,"Highly expressed in 2Cell","Highly expressed in 8Cell"))
 index=as.factor(category1)
 if(length(levels(index))==3) { index=factor(category1,levels=c("Regularly expressed","Highly expressed in 2Cell","Highly expressed in 8Cell"),ordered=T) }
